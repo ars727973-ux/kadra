@@ -838,8 +838,9 @@ export class TimelinePanel {
   }
 
   _kindIndex(track) {
+    // по id: во время перетаскивания строки строятся из копии секвенции (preview)
     const list = store.seq.tracks.filter((t) => t.kind === track.kind);
-    return list.indexOf(track);
+    return list.findIndex((t) => t.id === track.id);
   }
 
   _moveDrag(e, hit) {

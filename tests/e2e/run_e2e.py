@@ -488,6 +488,24 @@ async def main():
         ok = diff > 60 and res["ecShows"] and res["fxCount"] == 1 and res["transition"] and abs(res["transition"]["progress"] - 0.5) < 1e-6 and res["transition"]["a"] and res["transition"]["b"]
         log("Архитектура этапа 2: тестовый эффект и переход подключаются регистрацией плагина", ok, f"пиксель до {res['before'][:3]} → после эффекта {res['after'][:3]}; панель параметров: {res['ecShows']}; переход: {res['transition']}")
 
+        # ---------- 14. Медленное перетаскивание из «Проекта» (много событий dragover) ----------
+        n_before = len((await page.evaluate(STATE_JS))["clips"])
+        src = await page.locator(".media-list tr:has-text('music.mp3')").bounding_box()
+        row_a3 = await page.evaluate("(() => { const tl = window.__kadraApp.timeline; const r = tl.rows().find(r => r.track.name === 'A3'); tl._setScrollY(r.y); return document.querySelector('.tl-area').getBoundingClientRect().top + r.y - tl.scrollY + r.h/2; })()")
+        area = await area_box(page)
+        x0, y0 = src["x"] + 40, src["y"] + src["height"] / 2
+        await page.mouse.move(x0, y0)
+        await page.mouse.down()
+        for i in range(1, 41):
+            k = i / 40
+            await page.mouse.move(x0 + (area["x"] + 8 - x0) * k, y0 + (row_a3 - y0) * k)
+            await page.wait_for_timeout(15)
+        await page.mouse.up()
+        await page.wait_for_timeout(400)
+        st = await page.evaluate(STATE_JS)
+        a3 = [c for c in st["clips"] if c["track"] == "A3"]
+        log("Медленное перетаскивание файла на дорожку A3", len(st["clips"]) == n_before + 1 and len(a3) == 1, f"клипов {n_before} → {len(st['clips'])}, на A3: {len(a3)}")
+
         log("Ошибки в консоли браузера", not console_errors, "; ".join(console_errors[:5]) or "нет")
         await browser.close()
     httpd.shutdown()
