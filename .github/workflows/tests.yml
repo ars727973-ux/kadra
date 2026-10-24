@@ -1,0 +1,39 @@
+# Тесты: API сервера (pytest) и end-to-end в браузере (Playwright + Chromium).
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  server:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-dev.txt
+      - run: pytest -q
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: pip install -r tests/e2e/requirements.txt -r server/requirements.txt
+      - run: python -m playwright install --with-deps chromium
+      - run: python tests/e2e/make_media.py /tmp/kadra-media
+      - run: cd tests/e2e && python run_e2e.py /tmp/kadra-media /tmp/kadra-out
+      - run: cd tests/e2e && python cloud_e2e.py /tmp/kadra-media
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-output
+          path: /tmp/kadra-out

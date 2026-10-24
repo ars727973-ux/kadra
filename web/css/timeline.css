@@ -1,0 +1,230 @@
+/* Таймлайн: заголовки дорожек — DOM, поле клипов и линейка — canvas */
+.timeline {
+  background: #17181b;
+}
+.tl-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 6px;
+  border-bottom: 1px solid #101113;
+  flex: none;
+  background: var(--panel);
+}
+.tl-top .seq-tabs {
+  display: flex;
+  gap: 2px;
+  overflow: hidden;
+  min-width: 0;
+}
+.tl-top .seq-tab {
+  padding: 3px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.tl-top .seq-tab.active {
+  background: #2a2b31;
+  color: var(--text);
+}
+.tl-top .tools.horizontal {
+  display: none;
+}
+@media (max-width: 900px) {
+  .tl-top .tools.horizontal {
+    display: flex;
+  }
+}
+.tl-main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: var(--hdr-w, 168px) 1fr 12px;
+  grid-template-rows: 30px 1fr 12px;
+  min-height: 0;
+  position: relative;
+}
+.tl-corner {
+  grid-column: 1;
+  grid-row: 1;
+  background: #1c1d21;
+  border-right: 1px solid #0f1012;
+  border-bottom: 1px solid #0f1012;
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+}
+.tl-corner .timecode {
+  font-size: 15px;
+  min-width: 0;
+}
+.tl-ruler {
+  grid-column: 2;
+  grid-row: 1;
+  position: relative;
+  border-bottom: 1px solid #0f1012;
+  cursor: pointer;
+  overflow: hidden;
+}
+.tl-headers {
+  grid-column: 1;
+  grid-row: 2;
+  overflow: hidden;
+  position: relative;
+  background: #1c1d21;
+  border-right: 1px solid #0f1012;
+}
+.tl-headers-inner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+.tl-area {
+  grid-column: 2;
+  grid-row: 2;
+  position: relative;
+  overflow: hidden;
+  touch-action: none;
+}
+.tl-area canvas,
+.tl-ruler canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+}
+.tl-vscroll {
+  grid-column: 3;
+  grid-row: 2;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.tl-hscroll {
+  grid-column: 2;
+  grid-row: 3;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.tl-vscroll > div {
+  width: 1px;
+}
+.tl-hscroll > div {
+  height: 1px;
+}
+
+.track-hdr {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 4px 0 2px;
+  border-bottom: 1px solid #101113;
+  background: #1f2024;
+}
+.track-hdr.audio {
+  background: #1d1f1d;
+}
+.track-hdr.divider {
+  border-bottom: 3px solid #0b0c0d;
+}
+.track-hdr .patch {
+  width: 26px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-faint);
+  border: 1px solid #34363c;
+  cursor: pointer;
+  flex: none;
+}
+.track-hdr .patch.on {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: #062521;
+}
+.track-hdr .tname {
+  width: 30px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  background: #2c2e34;
+  font-size: 11px;
+  font-weight: 600;
+  flex: none;
+}
+.track-hdr .icon-btn {
+  width: 22px;
+  height: 22px;
+}
+.track-hdr .icon-btn svg {
+  width: 14px;
+  height: 14px;
+}
+.track-hdr .tb {
+  min-width: 22px;
+  height: 20px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0 4px;
+}
+.track-hdr .tb:hover {
+  border-color: #3b3d44;
+}
+.track-hdr .tb.on-m {
+  background: #2f6f9a;
+  color: #fff;
+}
+.track-hdr .tb.on-s {
+  background: #c49a2c;
+  color: #1a1305;
+}
+.track-hdr .lockon {
+  color: var(--danger);
+}
+.track-hdr.locked {
+  background-image: repeating-linear-gradient(135deg, transparent 0 6px, rgba(255, 255, 255, 0.03) 6px 12px);
+}
+.track-hdr .label {
+  flex: 1;
+  color: var(--text-faint);
+  font-size: 11px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-left: 4px;
+}
+.tl-zoom {
+  width: 110px;
+}
+
+/* узкие экраны */
+@media (max-width: 900px) {
+  .timeline {
+    --hdr-w: 116px;
+  }
+  .track-hdr .label {
+    display: none;
+  }
+  .tl-top {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tl-top .seq-tabs {
+    max-width: 90px;
+  }
+}

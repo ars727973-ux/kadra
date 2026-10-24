@@ -1,0 +1,240 @@
+/* Базовые переменные и элементы управления. Собственная тёмная тема Kadra:
+   графитовые панели, янтарный акцент, бирюзовый вторичный акцент. */
+:root {
+  --bg: #121316;
+  --panel: #1c1d21;
+  --panel-2: #222328;
+  --panel-3: #2a2b31;
+  --header: #26272c;
+  --border: #0b0c0e;
+  --line: #33353c;
+  --line-2: #3d4048;
+  --text: #d0d3d9;
+  --text-dim: #8d919a;
+  --text-faint: #646872;
+  --accent: #f0a53a;
+  --accent-strong: #ffbf5c;
+  --accent-ink: #1b1306;
+  --teal: #3fb7a7;
+  --danger: #e2574c;
+  --ok: #5bb974;
+  --clip-video: #3d7b88;
+  --clip-audio: #567f47;
+  --clip-image: #84703f;
+  --clip-gen: #5f6f93;
+  --playhead: #ff9a2e;
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  --radius: 4px;
+  --tab-h: 28px;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font: 12px/1.35 var(--font);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--panel);
+}
+::-webkit-scrollbar-thumb {
+  background: #3a3c43;
+  border-radius: 6px;
+  border: 2px solid var(--panel);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #4b4e57;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 10px;
+  border: 1px solid var(--line-2);
+  background: var(--panel-3);
+  border-radius: var(--radius);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn:hover {
+  background: #33353c;
+}
+.btn:active {
+  background: #2c2e34;
+}
+.btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.btn.primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+.btn.primary:hover {
+  background: var(--accent-strong);
+}
+.btn.danger {
+  border-color: #6b2e2a;
+  color: #ffb3ad;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 0;
+  flex: none;
+}
+.icon-btn:hover {
+  background: #2f3137;
+  color: var(--text);
+}
+.icon-btn.active,
+.icon-btn[aria-pressed='true'] {
+  color: var(--accent);
+  background: #2f2a22;
+}
+.icon-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.icon-btn svg {
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+input[type='text'],
+input[type='number'],
+input[type='password'],
+input[type='url'],
+select,
+textarea {
+  height: 26px;
+  padding: 0 8px;
+  background: #15161a;
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+  outline: none;
+  user-select: text;
+}
+textarea {
+  height: auto;
+  padding: 6px 8px;
+  resize: vertical;
+}
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent);
+}
+select {
+  padding-right: 4px;
+}
+input[type='checkbox'] {
+  accent-color: var(--accent);
+}
+input[type='range'] {
+  accent-color: var(--accent);
+}
+
+.muted {
+  color: var(--text-dim);
+}
+.mono {
+  font-family: var(--mono);
+}
+.hidden {
+  display: none !important;
+}
+.grow {
+  flex: 1;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Скрытые <video> для превью — вне экрана, но в DOM (декодирование не тормозится) */
+.hidden-media-host {
+  position: fixed;
+  left: -10px;
+  top: -10px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+.hidden-media-host video {
+  width: 1px;
+  height: 1px;
+}
+
+/* «Скраббируемые» числа как в Effect Controls */
+.scrub {
+  color: var(--accent);
+  cursor: ew-resize;
+  font-family: var(--mono);
+  padding: 1px 3px;
+  border-radius: 3px;
+  min-width: 18px;
+  display: inline-block;
+  text-align: right;
+}
+.scrub:hover {
+  background: #2e2a22;
+}
+.scrub-input {
+  width: 72px;
+  height: 20px !important;
+  font-family: var(--mono);
+  padding: 0 4px !important;
+}
+
+kbd {
+  font-family: var(--mono);
+  font-size: 11px;
+  background: #2b2d33;
+  border: 1px solid var(--line-2);
+  border-bottom-width: 2px;
+  border-radius: 3px;
+  padding: 0 4px;
+}

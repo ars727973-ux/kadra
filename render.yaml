@@ -1,0 +1,48 @@
+# Render Blueprint для Kadra Server (FastAPI).
+# Деплой: Render Dashboard → New → Blueprint → выбрать этот репозиторий.
+#
+# Данные (SQLite + медиафайлы) лежат на постоянном диске /var/data.
+# Постоянные диски доступны на платных планах Render (Starter и выше).
+# На бесплатном плане (plan: free, без блока disk) сервер работает, но
+# файловая система эфемерна: данные пропадут при перезапуске/деплое —
+# годится только для пробы. Для продакшена без диска задайте DATABASE_URL
+# (Render PostgreSQL) — проекты будут в БД, но медиафайлам всё равно нужен диск.
+services:
+  - type: web
+    name: kadra-server
+    runtime: python
+    rootDir: server
+    plan: starter
+    region: frankfurt
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips="*" --timeout-keep-alive 75
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: SECRET_KEY
+        generateValue: true # подпись JWT; Render сгенерирует случайное значение
+      - key: CORS_ORIGINS
+        value: "https://YOUR-GITHUB-USER.github.io" # адрес фронтенда на GitHub Pages (через запятую — несколько)
+      - key: DATA_DIR
+        value: /var/data
+      - key: MAX_UPLOAD_MB
+        value: "4096"
+      - key: TOKEN_TTL_HOURS
+        value: "720"
+      - key: ALLOW_REGISTRATION
+        value: "true"
+      # - key: DATABASE_URL           # необязательно: Render PostgreSQL вместо SQLite
+      #   fromDatabase:
+      #     name: kadra-db
+      #     property: connectionString
+    disk:
+      name: kadra-data
+      mountPath: /var/data
+      sizeGB: 10
+
+# databases:
+#   - name: kadra-db
+#     plan: basic-256mb
+#     region: frankfurt

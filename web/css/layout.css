@@ -1,0 +1,400 @@
+/* Каркас: меню, док-панели, строка состояния */
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.menubar {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 6px 0 10px;
+  background: #18191c;
+  border-bottom: 1px solid var(--border);
+  gap: 2px;
+  flex: none;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-right: 10px;
+  color: #e9e6df;
+}
+.brand svg {
+  width: 18px;
+  height: 18px;
+}
+.menu-root {
+  position: relative;
+}
+.menu-btn {
+  height: 26px;
+  padding: 0 9px;
+  border: 0;
+  background: transparent;
+  border-radius: var(--radius);
+  color: var(--text);
+  cursor: default;
+}
+.menu-btn:hover,
+.menu-btn.open {
+  background: #2c2d33;
+}
+.menubar .spacer {
+  flex: 1;
+}
+.project-title {
+  color: var(--text-dim);
+  max-width: 40vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 8px;
+}
+.project-title b {
+  color: var(--text);
+  font-weight: 600;
+}
+.save-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-left: 6px;
+  background: var(--ok);
+  vertical-align: middle;
+}
+.save-dot.dirty {
+  background: var(--accent);
+}
+
+/* --- выпадающее меню и контекстное меню --- */
+.dropdown {
+  position: fixed;
+  z-index: 1000;
+  min-width: 220px;
+  padding: 4px;
+  background: #24252a;
+  border: 1px solid #3a3c43;
+  border-radius: 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+}
+.dropdown .item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 26px;
+  padding: 0 10px 0 26px;
+  border-radius: 4px;
+  cursor: default;
+  white-space: nowrap;
+  position: relative;
+}
+.dropdown .item:hover,
+.dropdown .item.hot {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.dropdown .item:hover .shortcut,
+.dropdown .item.hot .shortcut {
+  color: var(--accent-ink);
+}
+.dropdown .item.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+.dropdown .item .check {
+  position: absolute;
+  left: 8px;
+  font-size: 11px;
+}
+.dropdown .item .label {
+  flex: 1;
+}
+.dropdown .item .shortcut {
+  color: var(--text-faint);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+.dropdown .item .arrow {
+  color: var(--text-faint);
+}
+.dropdown .sep {
+  height: 1px;
+  margin: 4px 6px;
+  background: #383a41;
+}
+.dropdown .heading {
+  padding: 4px 10px 2px 26px;
+  color: var(--text-faint);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* --- док-панели --- */
+#workspace {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  padding: 3px;
+  display: flex;
+}
+.dock-split {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+.dock-split.split-row {
+  flex-direction: row;
+}
+.dock-split.split-col {
+  flex-direction: column;
+}
+.dock-cell {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+}
+.dock-splitter {
+  flex: none;
+  background: transparent;
+  position: relative;
+  z-index: 2;
+}
+.dock-split.split-row > .dock-splitter {
+  width: 4px;
+  cursor: col-resize;
+}
+.dock-split.split-col > .dock-splitter {
+  height: 4px;
+  cursor: row-resize;
+}
+.dock-splitter:hover,
+.dock-splitter.dragging {
+  background: #3a3424;
+}
+
+.dock-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+.dock-group.focused {
+  border-color: #8a6223;
+  box-shadow: inset 0 0 0 1px #6b4c1c;
+}
+.dock-tabs {
+  display: flex;
+  align-items: stretch;
+  height: var(--tab-h);
+  background: var(--header);
+  border-bottom: 1px solid var(--border);
+  flex: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+.dock-tabs::-webkit-scrollbar {
+  display: none;
+}
+.dock-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  color: var(--text-dim);
+  cursor: pointer;
+  white-space: nowrap;
+  border-right: 1px solid #1d1e22;
+  position: relative;
+}
+.dock-tab:hover {
+  color: var(--text);
+}
+.dock-tab.active {
+  color: var(--text);
+  background: var(--panel);
+}
+.dock-tab.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: var(--accent);
+}
+.dock-group:not(.focused) .dock-tab.active::after {
+  background: #5d5a54;
+}
+.dock-tabs .tab-spacer {
+  flex: 1;
+}
+.dock-tabs .group-menu {
+  width: 26px;
+  height: 100%;
+  border-radius: 0;
+}
+.dock-body {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+.dock-body > .panel {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+.dock-body > .panel.active {
+  display: flex;
+}
+.dock-group.compact-hidden {
+  display: none;
+}
+
+/* зоны сброса при перетаскивании вкладок */
+.drop-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+}
+.drop-overlay .zone {
+  position: absolute;
+  background: rgba(240, 165, 58, 0.18);
+  border: 2px solid var(--accent);
+  border-radius: 4px;
+  display: none;
+}
+
+/* развёрнутая панель (клавиша `) */
+#workspace.maximized > .dock-split,
+#workspace.maximized > .dock-cell {
+  visibility: hidden;
+}
+.dock-group.maximized {
+  position: fixed !important;
+  z-index: 40;
+  inset: 35px 3px 27px 3px;
+  visibility: visible !important;
+}
+
+.statusbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 24px;
+  padding: 0 10px;
+  background: #18191c;
+  border-top: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 11px;
+  flex: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.statusbar .msg {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.statusbar .msg.error {
+  color: #ff9d94;
+}
+
+/* всплывающие уведомления */
+.toasts {
+  position: fixed;
+  right: 14px;
+  bottom: 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1200;
+  pointer-events: none;
+}
+.toast {
+  background: #2a2b31;
+  border: 1px solid #44464e;
+  border-left: 3px solid var(--teal);
+  padding: 9px 12px;
+  border-radius: 5px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5);
+  max-width: 380px;
+  pointer-events: auto;
+  animation: toast-in 0.18s ease-out;
+}
+.toast.error {
+  border-left-color: var(--danger);
+}
+.toast.warn {
+  border-left-color: var(--accent);
+}
+@keyframes toast-in {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+}
+
+/* перетаскивание файлов в окно */
+.file-drop-hint {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 12, 0.6);
+  pointer-events: none;
+}
+.file-drop-hint.show {
+  display: flex;
+}
+.file-drop-hint div {
+  padding: 26px 40px;
+  border: 2px dashed var(--accent);
+  border-radius: 12px;
+  font-size: 16px;
+  background: #1d1e22;
+}
+
+/* узкие экраны: панели складываются вкладками (см. layout.js — компактная раскладка) */
+@media (max-width: 900px) {
+  .menubar .project-title {
+    display: none;
+  }
+  .menu-btn {
+    padding: 0 6px;
+  }
+  .brand span {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .menubar {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .menubar::-webkit-scrollbar {
+    display: none;
+  }
+  .monitor-bar select {
+    max-width: 86px;
+  }
+}

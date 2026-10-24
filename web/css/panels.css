@@ -1,0 +1,480 @@
+/* Общий вид панели */
+.panel {
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: var(--panel);
+}
+.panel-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+  padding: 0 6px;
+  border-bottom: 1px solid #16171a;
+  flex: none;
+}
+.panel-footer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 30px;
+  padding: 0 6px;
+  border-top: 1px solid #16171a;
+  flex: none;
+}
+.panel-scroll {
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
+}
+.empty-hint {
+  color: var(--text-faint);
+  text-align: center;
+  padding: 26px 16px;
+  line-height: 1.6;
+}
+.search {
+  flex: 1;
+  min-width: 60px;
+}
+
+/* ---------- Project ---------- */
+.media-list {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.media-list th {
+  position: sticky;
+  top: 0;
+  background: var(--panel-2);
+  text-align: left;
+  font-weight: 500;
+  color: var(--text-dim);
+  padding: 5px 6px;
+  border-bottom: 1px solid #16171a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 1;
+}
+.media-list td.mono {
+  font-size: 11px;
+}
+.media-list td {
+  padding: 4px 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-bottom: 1px solid #202126;
+}
+.media-list tr {
+  cursor: default;
+}
+.media-list tr:hover td {
+  background: #23252a;
+}
+.media-list tr.selected td {
+  background: #3a3221;
+}
+.media-list tr.offline td.name {
+  color: #ff9d94;
+}
+.media-list .name-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.kind-badge {
+  flex: none;
+  width: 14px;
+  height: 10px;
+  border-radius: 2px;
+}
+.kind-badge.video {
+  background: var(--clip-video);
+}
+.kind-badge.audio {
+  background: var(--clip-audio);
+}
+.kind-badge.image {
+  background: var(--clip-image);
+}
+.kind-badge.sequence {
+  background: #8f5d3a;
+}
+
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--thumb-w, 132px), 1fr));
+  gap: 8px;
+  padding: 8px;
+}
+.media-card {
+  border-radius: 5px;
+  background: #18191d;
+  border: 1px solid transparent;
+  overflow: hidden;
+  cursor: default;
+}
+.media-card.selected {
+  border-color: var(--accent);
+}
+.media-card .thumb {
+  aspect-ratio: 16 / 9;
+  background: #0d0d0f center / cover no-repeat;
+  position: relative;
+}
+.media-card .thumb canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.media-card .thumb .dur {
+  position: absolute;
+  right: 4px;
+  bottom: 3px;
+  font: 10px var(--mono);
+  background: rgba(0, 0, 0, 0.65);
+  padding: 0 4px;
+  border-radius: 3px;
+}
+.media-card .thumb .offline-tag {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(120, 30, 30, 0.75);
+  font-weight: 600;
+}
+.media-card .meta {
+  padding: 4px 6px 5px;
+}
+.media-card .meta .n {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.media-card .meta .s {
+  color: var(--text-faint);
+  font-size: 10.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.import-progress {
+  height: 3px;
+  background: var(--accent);
+  transition: width 0.2s;
+}
+
+/* ---------- Мониторы ---------- */
+.monitor {
+  background: #101113;
+}
+.monitor-view {
+  flex: 1;
+  position: relative;
+  min-height: 60px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.monitor-view canvas.frame,
+.monitor-view video,
+.monitor-view img {
+  position: absolute;
+  background: #000;
+}
+.monitor-view canvas.overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.monitor-view .monitor-empty {
+  color: var(--text-faint);
+  text-align: center;
+  padding: 12px;
+}
+.monitor-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 8px;
+  flex: none;
+  background: #17181b;
+}
+.timecode {
+  font: 13px var(--mono);
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  cursor: text;
+  min-width: 96px;
+}
+.timecode.dim {
+  color: var(--text-dim);
+}
+.tc-input {
+  width: 108px;
+  font: 13px var(--mono) !important;
+}
+.monitor-scrub {
+  height: 20px;
+  flex: none;
+  position: relative;
+  background: #17181b;
+  cursor: pointer;
+  border-top: 1px solid #0f1012;
+}
+.monitor-scrub canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.transport {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 34px;
+  flex: none;
+  background: #17181b;
+  border-top: 1px solid #0f1012;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+.transport .sep {
+  width: 1px;
+  height: 18px;
+  background: #34363d;
+  margin: 0 5px;
+}
+.transport .play svg {
+  width: 18px;
+  height: 18px;
+}
+.monitor select {
+  height: 22px;
+  font-size: 11px;
+}
+.drag-handles {
+  display: flex;
+  gap: 4px;
+}
+.drag-handle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 22px;
+  padding: 0 7px;
+  border: 1px solid var(--line-2);
+  border-radius: 4px;
+  color: var(--text-dim);
+  cursor: grab;
+  font-size: 11px;
+}
+.drag-handle:hover {
+  color: var(--text);
+}
+.drag-handle svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* ---------- Effect Controls ---------- */
+.fx-header {
+  padding: 8px 10px;
+  border-bottom: 1px solid #16171a;
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.fx-header .clip-name {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fx-section {
+  border-bottom: 1px solid #1a1b1f;
+}
+.fx-section-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 8px;
+  background: #202126;
+  cursor: default;
+}
+.fx-section-head .tw {
+  width: 12px;
+  color: var(--text-dim);
+  transition: transform 0.12s;
+}
+.fx-section.collapsed .tw {
+  transform: rotate(-90deg);
+}
+.fx-section.collapsed .fx-rows {
+  display: none;
+}
+.fx-section-head .title {
+  flex: 1;
+  font-weight: 600;
+}
+.fx-badge {
+  font-size: 10px;
+  color: var(--text-faint);
+  border: 1px solid #3a3c43;
+  border-radius: 3px;
+  padding: 0 4px;
+}
+.fx-row {
+  display: grid;
+  grid-template-columns: minmax(90px, 40%) 1fr auto;
+  align-items: center;
+  min-height: 27px;
+  padding: 0 8px 0 26px;
+  gap: 8px;
+}
+.fx-row:hover {
+  background: #202227;
+}
+.fx-row .lbl {
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fx-row .val {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.fx-row .val select {
+  height: 22px;
+  max-width: 180px;
+}
+.fx-row .val input[type='range'] {
+  width: 100%;
+  max-width: 160px;
+}
+.fx-reset {
+  opacity: 0.6;
+}
+.fx-row:hover .fx-reset {
+  opacity: 1;
+}
+
+/* ---------- Effects ---------- */
+.fx-tree {
+  padding: 6px;
+}
+.fx-folder {
+  padding: 5px 6px;
+  color: var(--text-dim);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.fx-item {
+  padding: 4px 6px 4px 24px;
+  border-radius: 4px;
+  cursor: grab;
+}
+.fx-item:hover {
+  background: #26282d;
+}
+.stage-note {
+  margin: 8px;
+  padding: 10px 12px;
+  border: 1px dashed #4a4c54;
+  border-radius: 6px;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+
+/* ---------- Индикаторы уровня ---------- */
+.meters {
+  flex: 1;
+  display: flex;
+  gap: 4px;
+  padding: 8px 6px 6px;
+  min-height: 0;
+}
+.meters canvas {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ---------- Инструменты ---------- */
+.tools {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 0;
+  overflow: auto;
+}
+.tools.horizontal {
+  flex-direction: row;
+  padding: 0 4px;
+}
+.tools .icon-btn {
+  width: 30px;
+  height: 30px;
+}
+.tools .icon-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ---------- История / маркеры ---------- */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+}
+.list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  cursor: default;
+  white-space: nowrap;
+}
+.list li:hover {
+  background: #23252a;
+}
+.list li.current {
+  background: #3a3221;
+}
+.list li.future {
+  color: var(--text-faint);
+}
+.list li .grow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.marker-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  transform: rotate(45deg);
+  flex: none;
+}
+.list li svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  color: var(--text-dim);
+}

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Kadra — видеоредактор в браузере</title>
+    <meta name="description" content="Kadra — бесплатный нелинейный видеоредактор, работающий полностью в браузере." />
+    <meta name="theme-color" content="#18191c" />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/panels.css" />
+    <link rel="stylesheet" href="css/timeline.css" />
+    <link rel="stylesheet" href="css/dialogs.css" />
+    <!-- Внешние библиотеки: только открытые CDN, версии закреплены -->
+    <script type="importmap">
+      {
+        "imports": {
+          "mediabunny": "https://cdn.jsdelivr.net/npm/mediabunny@1.62.1/dist/bundles/mediabunny.min.mjs",
+          "@mediabunny/aac-encoder": "https://cdn.jsdelivr.net/npm/@mediabunny/aac-encoder@1.62.1/dist/bundles/mediabunny-aac-encoder.min.mjs"
+        }
+      }
+    </script>
+    <script src="config.js"></script>
+    <script type="module" src="js/main.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <header class="menubar" id="menubar"></header>
+      <main id="workspace"></main>
+      <footer class="statusbar" id="statusbar"></footer>
+    </div>
+    <div class="toasts" id="toasts"></div>
+    <div class="file-drop-hint" id="file-drop-hint"><div>Отпустите файлы, чтобы импортировать</div></div>
+    <noscript>Для работы редактора нужен JavaScript.</noscript>
+  </body>
+</html>
